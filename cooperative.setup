@@ -1,0 +1,6 @@
+(compile -s -O3 -d0 cooperative.import.scm)
+
+(install-extension 'cooperative
+                   '("cooperative.import.so")
+                   '((version "0.1")))
+

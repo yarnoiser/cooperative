@@ -1,0 +1,10 @@
+(
+(license "3 Clause BSD")
+
+(category hell)
+
+(test-depends simple-exceptions)
+
+(author "Robert Smiley")
+(synopsis "Cooperative Multitasking and Finite State Machines")
+)
