@@ -1,11 +1,11 @@
 (import cooperative)
 (use simple-exceptions)
 
-; create yieldable procedure
-(define proc* (make-yieldable (lambda ()
+; create coroutine
+(define proc* (make-coroutine (lambda ()
                                 (yield!)
                                 2)))
-(define proc (make-yieldable (lambda (x y)
+(define proc (make-coroutine (lambda (x y)
                                (yield! (+ x y))
                                (yield! (/ x y))
                                (yield! (proc*))
@@ -18,7 +18,7 @@
 ; procedure yields properly more than once
 (assert (= (proc) (/ 2 3)))
 
-; proper yield from nested yieldable
+; proper yield from nested coroutine
 (assert (eqv? (proc) (void)))
 
 ; normal return value from nested procedure
@@ -27,16 +27,16 @@
 ; we receive normal return value from procedure
 (assert (= (proc) (* 2 3)))
 
-; check error is received when yieldable procedure is finished
+; check error is received when coroutine is finished
 (let ([err #f])
   (with-exn-handler (lambda (e)
                       (set! err #t)
-                      (if (not (equal? (message e) "yieldable procedure has finished"))
-                        (error "improper error for finished yieldable procedure")))
+                      (if (not (equal? (message e) "coroutine has finished"))
+                        (error "improper error for finished coroutine procedure")))
                     (lambda ()
                       (proc)))
   (if (not err)
-    (error "no error from finished yieldable procedure")))
+    (error "no error from finished coroutine procedure")))
 
 ; create finite state machine
 (define f (fsm

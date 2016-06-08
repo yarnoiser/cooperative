@@ -30,11 +30,11 @@
 ; -----------------------------------------------------------------------------
 ; cooperative.scm
 ;
-; Cooperative Multitasking and Finite State Machines
+; Coroutines and Finite State Machines
 ; -----------------------------------------------------------------------------
 ; 
 
-(module cooperative (make-yieldable in-yieldable? yield! fsm)
+(module cooperative (make-coroutine in-coroutine? yield! fsm)
   (import chicken scheme)
 
   ; continuation stack
@@ -54,10 +54,10 @@
       (set! conts (cdr conts))
       c))
 
-  (define (in-yieldable?)
+  (define (in-coroutine?)
     (not (null? conts)))
 
-  (define (make-yieldable proc . args)
+  (define (make-coroutine proc . args)
     (let ([cont (lambda (return)
                   (cont-push! return)
                   (let ([res (apply proc args)])
@@ -65,7 +65,7 @@
           [finished #f])
       (lambda ()
         (if finished
-          (error "yieldable procedure has finished"))
+          (error "coroutine has finished"))
         (set! cont (call/cc cont))
         (if yield-occured
           (begin (set! yield-occured #f)
@@ -74,8 +74,8 @@
                  cont)))))
 
   (define (yield! #!optional [val (void)])
-    (if (not (in-yieldable?))
-      (error "not within yieldable procedure"))
+    (if (not (in-coroutine?))
+      (error "not within coroutine"))
     (set! ret-val val)
     (set! yield-occured #t)
     (cont-push! (call/cc (cont-pop!))))
@@ -85,7 +85,7 @@
        input: (input ...)
        vars: vars
        start: initial-state
-       (state: state-val
+       (state: state-name
          act: act
          output: (output ...)
          trans: ((pred next-state) ...))
@@ -96,7 +96,7 @@
            (lambda args
              (receive (input ...) (apply values args)
                (case state
-                 ((state-val) (begin act
+                 ((state-name) (begin act
                                      (cond
                                        (pred (set! state 'next-state))
                                         ...)
