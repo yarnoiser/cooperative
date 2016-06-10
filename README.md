@@ -1,13 +1,12 @@
 # cooperative
 This README is a work in progress.
 
-Cooperative Multitasking for Chicken Scheme
-# cooperative
-Cooperative multitasking for chicken scheme using coroutines and
-finite state machines.
+Coroutines and Finite State Machines for Chicken Scheme
+
 
 ## Installing
-Run *chicken-install cooperative*.
+Run *chicken-install cooperative*
+(will work once egg is submitted).
 
 ## Usage
 ### \[procedure] (make-coroutine proc . args)
@@ -100,36 +99,36 @@ need to be quoted.
 (define docking-control
   (fsm
     input: (use-case)
-    vars: ([ports 3] [ships 0] [status #f])
+    vars: ((ports 3) (ships 0) (status #f))
     start: empty
 
     (state: empty
       act: (case use-case
-             [(arrival) (begin (set! ships (add1 ships))
-                               (set! status 'approved))]
-             [(departure) (set! status 'denied)]
-             [else (error "invalid use case")])
+             ((arrival) (begin (set! ships (add1 ships))
+                               (set! status 'approved)))
+             ((departure) (set! status 'denied))
+             (else (error "invalid use case")))
       output: (status)
-      trans: ([(< 0 ships) else]))
+      trans: (((< 0 ships) else)))
 
     (state: full
       act: (case use-case
-             [(arrival) (set! status 'denied)]
-             [(departure) (begin (set! ships (sub1 ships))
-                                 (set! status 'approved))]
-             [else (error "invalid use case")])
+             ((arrival) (set! status 'denied))
+             ((departure) (begin (set! ships (sub1 ships))
+                                 (set! status 'approved)))
+             (else (error "invalid use case")))
       output: (status)
-      trans: ([(< ships ports) else]))
+      trans: (((< ships ports) else)))
 
     (state: else
       act: (begin (set! status 'approved)
                   (case use-case
-                    [(arrival) (set! ships (add1 ships))]
-                    [(departure) (set! ships (sub1 ships))]
-                    [else (error "invalid use case")]))
+                    ((arrival) (set! ships (add1 ships)))
+                    ((departure) (set! ships (sub1 ships)))
+                    (else (error "invalid use case"))))
       output: (status)
-      trans: ([(= ports ships) full]
-              [(= ships 0) empty])) ))
+      trans: (((= ports ships) full)
+              ((= ships 0) empty))) ))
 ```
 
 (docking-control 'departure)
