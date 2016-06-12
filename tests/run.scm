@@ -38,6 +38,18 @@
   (if (not err)
     (error "no error from finished coroutine procedure")))
 
+; test in-coroutine?
+
+; should be false
+(define (test-proc)
+  (in-coroutine?))
+
+; should be true
+(define test-coroutine (make-coroutine test-proc))
+
+(assert (not (test-proc)))
+(assert (test-coroutine))
+
 ; create finite state machine
 (define f (fsm
             input: (input1 input2)
