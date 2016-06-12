@@ -20,7 +20,7 @@ or
 Returns a new coroutine. The resulting procedure is a thunk
 (it takes no arguments). When the coroutine is called, it is equivalent to applying
 *args* to *proc*, except that any calls to *yield!*
-will return controll to the calling procedure. When the coroutine is called again
+will return control to the calling procedure. When the coroutine is called again
 after *yield!*, it will continue where it left off before yielding
 An error is signalled if the coroutine is called after it completes
 without calling *yield!*.
@@ -80,7 +80,7 @@ to *make-coroutine*. Else returns false.
 ### \[procedure] (yield! [val])
 Exits the current coroutine returning control to the calling
 procedure. Returns the optional value *val*, which defaults to (void). An error
-is signaled if *yield!* is called outside of a coroutine procedure.
+is singled if *yield!* is called outside of a coroutine procedure.
 
 #### Example
 See *make-coroutine*
