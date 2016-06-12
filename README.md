@@ -92,15 +92,15 @@ behaves differently with subsequent calls depending on what state it is in.
 The machine parameters consist of literals followed by a relevant expression.
 these parameters must be outlined in the order they are shown above.
 
-**input:** Followed by a list of input values. These are received as arguments
+**input: (input ...)** A list of input values. These are received as arguments
 to the finite state machine when it is called, and can be referenced as
 variables within the state machine.
 
-**vars:** Followed by a list of variable assignments equivalent to those found
+**vars: vars** A list of variable assignments equivalent to those found
 in a *let* expression. These variables are internal to the state machine and
 persist between calls to it, unless specifically changed.
 
-**start:** Followed by the name of the initial state. This is the state in
+**start: initial-state** The name of the initial state. This is the state in
 which the finite state machine will be in when it is first called. The name of
 the initial state is not evaluated, and does not need to be quoted.
 
@@ -108,24 +108,24 @@ The remaining parameters are state definitions, which also consist of literals
 followed by relevant expressions. Like the above parameters, they must be
 written in the order shown:
 
-**(state: state-name act: act output: (output ...) trans: ((pred next-state) ...))**
+**(state: state-name act: act output: (output ...) trans: ((condition next-state) ...))**
 
-**state:** Followed by the state name. This is the name of the state being
+**state: state-name** The state name. This is the name of the state being
 defined and is used to refer to this state during transitions. This name is not
 evaluated, and does not need to be quoted.
 
-**act:** Followed by the action to be performed for this state. This consists
+**act: act** The state's action expression. This consists
 of a single scheme expression. Forms such as *let* or *begin* should be used
 to perform multiple actions here.
 
-**output:** Followed by a list of output values. A list containing all values
+**output: (output ...)** Followed by a list of output values. A list containing all values
 specified here will be returned to the calling procedure. The list should not
 be quoted, quasiquoted or created with the list procedure, simply specified
 with parentheses, although individual elements will be evaluated.
 
-**trans:** Followed by the transition list. This is an association list
-containing predicates paired with states to transition to. The next time the
-finite state machine is called, the it will be in the state paired with the
+**trans: ((condition next-state) ...)** The state transitions list. This is an association list
+containing boolean expressions paired with states to transition to. The next time the
+finite state machine is called, it will be in the state paired with the
 first predicate to return true. The state names are not evaluated and do not
 need to be quoted.
 
