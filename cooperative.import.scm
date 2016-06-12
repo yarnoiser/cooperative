@@ -32,7 +32,6 @@
 ;
 ; Coroutines and Finite State Machines
 ; -----------------------------------------------------------------------------
-; 
 
 (module cooperative (make-coroutine in-coroutine? yield! fsm)
   (import chicken scheme)
