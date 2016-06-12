@@ -1,5 +1,4 @@
 # cooperative
-This README is a work in progress.
 
 Coroutines and Finite State Machines for Chicken Scheme
 
@@ -9,6 +8,14 @@ Run *chicken-install cooperative*
 (will work once egg is submitted).
 
 ## Usage
+```scheme
+(use cooperative)
+```
+or
+```scheme
+(require-extension cooperative)
+```
+
 ### \[procedure] (make-coroutine proc . args)
 Returns a new coroutine. The resulting procedure is a thunk
 (it takes no arguments). When the coroutine is called, it is equivalent to applying
@@ -20,12 +27,15 @@ without calling *yield!*.
 
 #### Example
 ```scheme
-(define from-1-to-3 (make-coroutine (lambda (x y)
-                                      (let loop ()
-                                        (if (< x y)
-                                          (begin (set! x (add1 x))
-                                                 (yield! x) 
-                                                 (loop))))) 0 3))
+(define (from-x-to-y x y)
+  (let loop ()
+    (if (< x y)
+      (begin (yield! x)
+             (set! x (add1 x))
+             (loop))
+      y)))
+
+(define from-1-to-3 (make-coroutine from-x-to-y 1 3))
 
 (from-1-to-3)
 1
@@ -42,6 +52,30 @@ Returns true if it is called within a coroutine created with a call
 to *make-coroutine*. Else returns false.
 
 #### Example
+```scheme
+(define (maybe-coroutine)
+  (let loop ((x 0))
+    (if (in-coroutine?)
+      (yield! 'yielded))
+    (if (= x 3)
+      x
+      (loop (add1 x)))))
+  
+  (maybe-coroutine)
+  3
+  
+  (define coroutine (make-coroutine maybe-coroutine))
+  (coroutine)
+  yielded
+  (coroutine)
+  yielded
+  (coroutine)
+  yielded
+  (coroutine)
+  yielded
+  (coroutine)
+  3
+```
 
 ### \[procedure] (yield! [val])
 Exits the current coroutine returning control to the calling
@@ -49,6 +83,7 @@ procedure. Returns the optional value *val*, which defaults to (void). An error
 is signaled if *yield!* is called outside of a coroutine procedure.
 
 #### Example
+See *make-coroutine*
 
 ### \[syntax] (fsm input: (input ...) vars: vars start: initial-state state ...)
 Creates a finite state machine. The resulting machine is a procedure which
@@ -129,7 +164,7 @@ need to be quoted.
       output: (status)
       trans: (((= ports ships) full)
               ((= ships 0) empty))) ))
-```
+
 
 (docking-control 'departure)
 (denied)
@@ -137,3 +172,15 @@ need to be quoted.
 (docking-control 'arrival)
 (approved)
 
+(docking-control 'arrival)
+(approved)
+
+(docking-control 'arrival)
+(approved)
+
+(docking-control 'arrival)
+(denied)
+
+(docking-control 'departure)
+(approved)
+```
