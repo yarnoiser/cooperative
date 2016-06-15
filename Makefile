@@ -18,5 +18,5 @@ test: tests/run.scm
 	csi -I ./ -s tests/run.scm
 
 clean:
-	$(RM) *.so salmonella.log
+	$(RM) *.so *.import.scm salmonella.log
 
