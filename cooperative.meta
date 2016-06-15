@@ -6,5 +6,7 @@
 (test-depends simple-exceptions)
 
 (author "Robert Smiley")
-(synopsis "Cooperative Multitasking and Finite State Machines")
+(synopsis "Coroutines and Finite State Machines")
+(files "cooperative.import.scm" "cooperative.setup")
 )
+

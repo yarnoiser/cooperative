@@ -28,7 +28,7 @@
 ; POSSIBILITY OF SUCH DAMAGE.
 
 ; -----------------------------------------------------------------------------
-; cooperative.scm
+; cooperative.import.scm
 ;
 ; Coroutines and Finite State Machines
 ; -----------------------------------------------------------------------------

@@ -1,0 +1,4 @@
+(repo git https://github.com/yarnoiser/cooperative)
+(uri targz "https://codeload.github.com/yarnoiser/{egg-name}/tar.gz/{egg-release}")
+(release "0.1.0")
+

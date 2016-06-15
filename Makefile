@@ -3,7 +3,7 @@
 
 .PHONY: clean
 
-all: default
+default: build
 
 build: cooperative.import.scm cooperative.setup
 	chicken-install -n
@@ -15,8 +15,8 @@ uninstall:
 	chicken-uninstall cooperative
 
 test: tests/run.scm
-	cd tests/; csi -s run.scm
+	csi -I ./ -s tests/run.scm
 
 clean:
-	$(RM) cooperative.import.so salmonella.log
+	$(RM) *.so salmonella.log
 
