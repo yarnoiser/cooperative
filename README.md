@@ -4,8 +4,7 @@ Coroutines and Finite State Machines for Chicken Scheme
 
 
 ## Installing
-Run *chicken-install cooperative*
-(will work once egg is submitted).
+Run *chicken-install cooperative*.
 
 ## Usage
 ```scheme

@@ -1,5 +1,4 @@
-(import cooperative)
-(use simple-exceptions)
+(use cooperative simple-exceptions)
 
 ; create coroutine
 (define proc* (make-coroutine (lambda ()

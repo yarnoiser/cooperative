@@ -7,6 +7,6 @@
 
 (author "Robert Smiley")
 (synopsis "Coroutines and Finite State Machines")
-(files "cooperative.import.scm" "cooperative.setup")
+(files "cooperative.scm" "cooperative.setup")
 )
 
