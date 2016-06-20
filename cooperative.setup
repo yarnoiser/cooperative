@@ -1,7 +1,7 @@
-(compile -s -O3 -d0 cooperative.scm -j cooperative)
+(compile -s -O3 -d1 cooperative.scm -j cooperative)
 (compile -s -O3 -d0 cooperative.import.scm)
 
 (install-extension 'cooperative
-                   '("cooperative.import.scm" "cooperative.so")
-                   '((version "0.1.0")))
+                   '("cooperative.import.so" "cooperative.so")
+                   '((version "0.1.1")))
 
