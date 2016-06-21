@@ -3,12 +3,14 @@
 
 .PHONY: clean
 
+SRC=cooperative.scm cooperative.setup cooperative.meta
+
 default: build
 
-build: cooperative.import.scm cooperative.setup
+build: $(SRC)
 	chicken-install -n
 
-install: cooperative.import.scm cooperative.setup
+install: $(SRC)
 	chicken-install
 
 uninstall:
@@ -18,5 +20,6 @@ test: tests/run.scm
 	csi -I ./ -s tests/run.scm
 
 clean:
-	$(RM) *.so *.import.scm salmonella.log
+	$(RM) *.so *.import.scm *.o *.c salmonella.log
+
 
