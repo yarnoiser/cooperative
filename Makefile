@@ -16,7 +16,7 @@ install: $(SRC)
 uninstall:
 	chicken-uninstall cooperative
 
-test: tests/run.scm
+test: build tests/run.scm
 	csi -I ./ -s tests/run.scm
 
 clean:
