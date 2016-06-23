@@ -183,3 +183,5 @@ need to be quoted.
 (docking-control 'departure)
 (approved)
 ```
+## About the Author
+Robert Smiley, the author of this egg can be reached at (yarnoiserdev@gmail.com).
