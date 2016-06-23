@@ -184,4 +184,4 @@ need to be quoted.
 (approved)
 ```
 ## About the Author
-Robert Smiley, the author of this egg can be reached at (yarnoiserdev@gmail.com).
+Robert Smiley, the author of this egg can be reached at yarnoiserdev@gmail.com.
