@@ -4,7 +4,7 @@ Coroutines and Finite State Machines for Chicken Scheme
 
 
 ```
-Run *chicken-install cooperative*.
+chicken-install cooperative
 ```
 
 ## Usage
