@@ -3,19 +3,19 @@
 Coroutines and Finite State Machines for Chicken Scheme
 
 
-## Installing
-Run *chicken-install cooperative*.
+```
+chicken-install cooperative
+```
 
 ## Usage
 ```scheme
 (use cooperative)
 ```
-or
-```scheme
-(require-extension cooperative)
-```
 
-### \[procedure] (make-coroutine proc . args)
+### make-coroutine
+```
+[procedure] (make-coroutine proc . args)
+```
 Returns a new coroutine. The resulting procedure is a thunk
 (it takes no arguments). When the coroutine is called, it is equivalent to applying
 *args* to *proc*, except that any calls to *yield!*
@@ -46,7 +46,10 @@ without calling *yield!*.
 error "coroutine has finished"
 ```
 
-### \[procedure] (in-coroutine?)
+### in-coroutine?
+```
+[procedure] (in-coroutine?)
+```
 Returns true if it is called within a coroutine created with a call
 to *make-coroutine*. Else returns false.
 
@@ -75,8 +78,10 @@ to *make-coroutine*. Else returns false.
   (coroutine)
   3
 ```
-
-### \[procedure] (yield! [val])
+### yeild!
+```
+[procedure] (yield! [val])
+```
 Exits the current coroutine returning control to the calling
 procedure. Returns the optional value *val*, which defaults to (void). An error
 is singled if *yield!* is called outside of a coroutine procedure.
@@ -84,7 +89,10 @@ is singled if *yield!* is called outside of a coroutine procedure.
 #### Example
 See *make-coroutine*
 
-### \[syntax] (fsm input: (input ...) vars: vars start: initial-state state ...)
+### fsm
+```
+[syntax] (fsm input: (input ...) vars: vars start: initial-state state ...)
+```
 Creates a finite state machine. The resulting machine is a procedure which
 behaves differently with subsequent calls depending on what state it is in.
 
@@ -183,3 +191,5 @@ need to be quoted.
 (docking-control 'departure)
 (approved)
 ```
+## About the Author
+Robert Smiley, the author of this egg can be reached at yarnoiserdev@gmail.com.
