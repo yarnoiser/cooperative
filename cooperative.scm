@@ -52,16 +52,17 @@
     (cont-push! (call/cc (cont-pop!))))
 
   (define-syntax fsm (ir-macro-transformer 
-  (lambda (expression inject compare?) 
-    (match expression 
-      [(_ args vars initial-state . body) 
-       `(let ,vars 
-          (let* ([state ,initial-state] 
-                 [,(inject 'trans!) (lambda (new-state) (set! state new-state))]) 
-            (lambda ,args 
-              (case state . 
-                ,(map (lambda (current-body) 
-                       `((,(car current-body)) . ,(cdr current-body))) 
-                     body)))))])))) 
+    (lambda (expression inject compare?) 
+      (match expression 
+        [(_ args vars initial-state . body) 
+         `(let ,vars 
+            (let* ([state ,initial-state] 
+                   [,(inject 'trans!) (lambda (new-state) (set! state new-state))]) 
+                (values (lambda ,args 
+                          (case state . 
+                          ,(map (lambda (current-body) 
+                                `((,(car current-body)) . ,(cdr current-body))) 
+                           body)))
+                       ,(inject 'trans!))))]))))
 )
 
