@@ -3,9 +3,10 @@
 ;
 ; Coroutines and Finite State Machines
 ; -----------------------------------------------------------------------------
-
 (module cooperative (make-coroutine in-coroutine? yield! fsm)
   (import chicken scheme)
+  (use matchable)
+  (import-for-syntax matchable)
 
   ; continuation stack
   (define conts '())
@@ -50,27 +51,17 @@
     (set! yield-occured #t)
     (cont-push! (call/cc (cont-pop!))))
 
-  (define-syntax fsm (syntax-rules (input: vars: start: state: act: trans: output:)
-    ((fsm
-       input: (input ...)
-       vars: vars
-       start: initial-state
-       (state: state-name
-         act: act
-         output: (output ...)
-         trans: ((pred next-state) ...))
-        ...)
-
-       (let vars
-         (let ((state 'initial-state))
-           (lambda args
-             (receive (input ...) (apply values args)
-               (case state
-                 ((state-name) (begin act
-                                     (cond
-                                       (pred (set! state 'next-state))
-                                        ...)
-                                     (list output ...)))
-                 ...))))))))
+  (define-syntax fsm (ir-macro-transformer 
+  (lambda (expression inject compare?) 
+    (match expression 
+      [(_ args vars initial-state . body) 
+       `(let ,vars 
+          (let* ([state ,initial-state] 
+                 [,(inject 'trans!) (lambda (new-state) (set! state new-state))]) 
+            (lambda ,args 
+              (case state . 
+                ,(map (lambda (current-body) 
+                       `((,(car current-body)) . ,(cdr current-body))) 
+                     body)))))])))) 
 )
 
